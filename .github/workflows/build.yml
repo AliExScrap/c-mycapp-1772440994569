@@ -1,0 +1,19 @@
+name: Build C EXE
+on: [push]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile
+        run: gcc -o output.exe main.c raylib_stub.c -lm
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0-${{ github.run_number }}
+          name: "MyCApp v1.0.0"
+          files: output.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
